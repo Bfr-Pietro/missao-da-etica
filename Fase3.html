@@ -59,7 +59,7 @@
         }
 
         .special-sentence {
-            background-color: #333; /* Mantém a cor igual à das outras sentenças */
+            background-color: #333;
             font-weight: bold;
         }
 
@@ -70,7 +70,7 @@
             font-size: 18px;
         }
 
-        #startButton {
+        #startButton, #retryButton {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -82,6 +82,11 @@
             color: white;
             border: none;
             border-radius: 5px;
+        }
+
+        #retryButton {
+            display: none; /* Esconde o botão até que o jogo seja perdido */
+            background-color: #dc3545;
         }
 
         #objetivo {
@@ -154,6 +159,7 @@
         <div id="player" class="player" style="display: none;"></div>
         <div id="score">Pontuação: 0</div>
         <button id="startButton">Iniciar Jogo</button>
+        <button id="retryButton" onclick="redirectToRetry()">Tentar Novamente</button> <!-- Botão para redirecionamento após game over -->
         
         <!-- Controles para dispositivos móveis -->
         <div id="mobileControls">
@@ -167,13 +173,13 @@
         const gameContainer = document.querySelector('.game-container');
         const scoreDisplay = document.getElementById('score');
         const startButton = document.getElementById('startButton');
-        let playerPosition = 0; // 0 = esquerda, 1 = centro, 2 = direita
+        const retryButton = document.getElementById('retryButton'); // Botão para redirecionamento
+        let playerPosition = 0; 
         let score = 0;
         let gameOver = false;
-        let sentenceSpeed = 10; // Velocidade inicial das sentenças
+        let sentenceSpeed = 10; 
         let createSentenceInterval;
 
-        // Sentenças para o jogo
         const sentences = [
             { text: "O céu é azul", correct: true },
             { text: "2 + 2 = 5", correct: false },
@@ -183,7 +189,6 @@
             { text: "Cachorros miam", correct: false }
         ];
 
-        // Movimenta o jogador entre as três faixas usando o teclado
         document.addEventListener('keydown', (event) => {
             if (!gameOver) {
                 if (event.key === 'ArrowLeft') movePlayerLeft();
@@ -191,7 +196,6 @@
             }
         });
 
-        // Função para mover o jogador para a esquerda
         function movePlayerLeft() {
             if (playerPosition > 0) {
                 playerPosition--;
@@ -199,7 +203,6 @@
             }
         }
 
-        // Função para mover o jogador para a direita
         function movePlayerRight() {
             if (playerPosition < 2) {
                 playerPosition++;
@@ -207,20 +210,18 @@
             }
         }
 
-        // Atualiza a posição do jogador
         function updatePlayerPosition() {
             player.style.left = `${playerPosition * (gameContainer.clientWidth / 2.6)}px`;
         }
 
-        // Função para criar sentenças
         function createSentence() {
-            const isSpecial = Math.random() < 0.2; // 20% de chance de ser uma sentença especial
+            const isSpecial = Math.random() < 0.2;
             const sentenceData = sentences[Math.floor(Math.random() * sentences.length)];
             const sentence = document.createElement('div');
             sentence.classList.add('sentence');
             if (isSpecial) {
                 sentence.classList.add('special-sentence');
-                sentence.textContent = "Não colete"; // Texto das sentenças especiais
+                sentence.textContent = "Não colete";
                 sentence.dataset.special = 'true';
             } else {
                 sentence.textContent = sentenceData.text;
@@ -237,7 +238,6 @@
                 } else {
                     sentence.style.top = `${sentence.offsetTop + sentenceSpeed}px`;
 
-                    // Checa colisão
                     const playerRect = player.getBoundingClientRect();
                     const sentenceRect = sentence.getBoundingClientRect();
                     if (
@@ -253,16 +253,14 @@
                             score -= 5;
                             if (score < 0) {
                                 gameOver = true;
-                                alert(`Game Over! Pontuação final: ${score}`);
+                                endGame();
                             }
                         }
 
-                        // Aplica o efeito da sentença especial, se for o caso
                         if (sentence.dataset.special === 'true') {
-                            sentenceSpeed += 2; // Aumenta a velocidade
+                            sentenceSpeed += 2; 
                         }
 
-                        // Atualiza a pontuação e verifica se atingiu 250 pontos
                         scoreDisplay.textContent = `Pontuação: ${score}`;
                         if (score >= 250) {
                             redirectToNextLevel();
@@ -270,7 +268,6 @@
                         sentence.remove();
                     }
 
-                    // Remove a sentença ao sair da tela
                     if (sentence.offsetTop > gameContainer.offsetHeight) {
                         sentence.remove();
                     }
@@ -278,19 +275,27 @@
             }, 20);
         }
 
-        // Redireciona para o próximo nível
         function redirectToNextLevel() {
             gameOver = true;
-            window.location.href = "VitoriaFase3.html"; // Substitua pela URL desejada
+            window.location.href = "VitoriaFase3.html"; 
         }
 
-        // Função para iniciar o jogo
+        function endGame() {
+            alert(`Game Over! Pontuação final: ${score}`);
+            retryButton.style.display = 'block';
+        }
+
+        function redirectToRetry() {
+            window.location.href = "index.html"; // Substitua pela URL de redirecionamento desejada
+        }
+
         function startGame() {
             startButton.style.display = 'none';
             player.style.display = 'block';
+            retryButton.style.display = 'none'; 
             gameOver = false;
             score = 0;
-            sentenceSpeed = 10; // Reinicia a velocidade
+            sentenceSpeed = 10; 
             scoreDisplay.textContent = `Pontuação: ${score}`;
 
             createSentenceInterval = setInterval(() => {
@@ -300,7 +305,6 @@
             }, 1000);
         }
 
-        // Inicia o jogo ao clicar no botão de início
         startButton.addEventListener('click', startGame);
     </script>
 </body>
