@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão da Ética</title>
+    <link rel="shortcut icon" href="assets/imgs/favicon.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url(assets/imgs/polotno.png);
+            background-size: 100vw;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .game-container {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            background-image: url(assets/imgs/Rua\ Jogo\ de\ Ética.png);
+            overflow: hidden;
+            border: 5px solid black;
+        }
+
+        .player {
+            position: absolute;
+            bottom: 20px;
+            width: 120px;
+            height: 120px;
+            transform: rotate(270deg);
+            background-size: cover;
+            background-position: center;
+            background-image: url(assets/imgs/animacao_megaman_-running.gif);
+            border-radius: 10px;
+            transition: left 0.2s ease-in-out;
+        }
+
+        .sentence {
+            position: absolute;
+            width: 30%;
+            height: 60px;
+            padding: 5px;
+            font-size: 14px;
+            text-align: center;
+            color: #fff;
+            background-color: #333;
+            border-radius: 5px;
+        }
+
+        .special-sentence {
+            background-color: #333; /* Mantém a cor igual à das outras sentenças */
+            font-weight: bold;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+        }
+
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #objetivo {
+            position: absolute;
+            top: 1px;
+            text-align: center;
+        }
+
+        .efeito-vidro {
+            background: rgba(124, 122, 122, 0.653);
+            border-radius: 10px;
+            padding: 2px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Media query para dispositivos móveis */
+        @media (max-width: 768px) {
+            .game-container {
+                width: 100%;
+                height: 70vh;
+                background-size: 100vw;
+            }
+
+            .player {
+                width: 100px;
+                height: 100px;
+            }
+
+            .sentence {
+                font-size: 12px;
+                width: 32%;
+            }
+
+            #score {
+                font-size: 16px;
+            }
+
+            #mobileControls {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                position: absolute;
+                bottom: 10px;
+            }
+
+            .control-button {
+                width: 45%;
+                padding: 10px;
+                font-size: 18px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="objetivo" class="efeito-vidro">
+        <h1>Objetivo:</h1>
+        <p>Colete as sentenças verdadeiras e desvie das erradas. Alcance 250 pontos e passe de nível! <br>
+        <b>Obs: Fase com sentenças especiais!!</b></p>
+    </div>
+
+    <div class="game-container">
+        <div id="player" class="player" style="display: none;"></div>
+        <div id="score">Pontuação: 0</div>
+        <button id="startButton">Iniciar Jogo</button>
+        
+        <!-- Controles para dispositivos móveis -->
+        <div id="mobileControls">
+            <button class="control-button" onclick="movePlayerLeft()">←</button>
+            <button class="control-button" onclick="movePlayerRight()">→</button>
+        </div>
+    </div>
+
+    <script>
+        const player = document.getElementById('player');
+        const gameContainer = document.querySelector('.game-container');
+        const scoreDisplay = document.getElementById('score');
+        const startButton = document.getElementById('startButton');
+        let playerPosition = 0; // 0 = esquerda, 1 = centro, 2 = direita
+        let score = 0;
+        let gameOver = false;
+        let sentenceSpeed = 10; // Velocidade inicial das sentenças
+        let createSentenceInterval;
+
+        // Sentenças para o jogo
+        const sentences = [
+            { text: "O céu é azul", correct: true },
+            { text: "2 + 2 = 5", correct: false },
+            { text: "A água é molhada", correct: true },
+            { text: "A terra é plana", correct: false },
+            { text: "O fogo é quente", correct: true },
+            { text: "Cachorros miam", correct: false }
+        ];
+
+        // Movimenta o jogador entre as três faixas usando o teclado
+        document.addEventListener('keydown', (event) => {
+            if (!gameOver) {
+                if (event.key === 'ArrowLeft') movePlayerLeft();
+                else if (event.key === 'ArrowRight') movePlayerRight();
+            }
+        });
+
+        // Função para mover o jogador para a esquerda
+        function movePlayerLeft() {
+            if (playerPosition > 0) {
+                playerPosition--;
+                updatePlayerPosition();
+            }
+        }
+
+        // Função para mover o jogador para a direita
+        function movePlayerRight() {
+            if (playerPosition < 2) {
+                playerPosition++;
+                updatePlayerPosition();
+            }
+        }
+
+        // Atualiza a posição do jogador
+        function updatePlayerPosition() {
+            player.style.left = `${playerPosition * (gameContainer.clientWidth / 2.6)}px`;
+        }
+
+        // Função para criar sentenças
+        function createSentence() {
+            const isSpecial = Math.random() < 0.2; // 20% de chance de ser uma sentença especial
+            const sentenceData = sentences[Math.floor(Math.random() * sentences.length)];
+            const sentence = document.createElement('div');
+            sentence.classList.add('sentence');
+            if (isSpecial) {
+                sentence.classList.add('special-sentence');
+                sentence.textContent = "Não colete"; // Texto das sentenças especiais
+                sentence.dataset.special = 'true';
+            } else {
+                sentence.textContent = sentenceData.text;
+                sentence.dataset.correct = sentenceData.correct;
+            }
+            sentence.style.left = `${Math.floor(Math.random() * 3) * (gameContainer.clientWidth / 2.8)}px`;
+            sentence.style.top = '-30px';
+            gameContainer.appendChild(sentence);
+
+            const sentenceInterval = setInterval(() => {
+                if (gameOver) {
+                    clearInterval(sentenceInterval);
+                    sentence.remove();
+                } else {
+                    sentence.style.top = `${sentence.offsetTop + sentenceSpeed}px`;
+
+                    // Checa colisão
+                    const playerRect = player.getBoundingClientRect();
+                    const sentenceRect = sentence.getBoundingClientRect();
+                    if (
+                        playerRect.left < sentenceRect.right &&
+                        playerRect.right > sentenceRect.left &&
+                        playerRect.top < sentenceRect.bottom &&
+                        playerRect.bottom > sentenceRect.top
+                    ) {
+                        clearInterval(sentenceInterval);
+                        if (sentence.dataset.correct === 'true') {
+                            score += 10;
+                        } else if (sentence.dataset.correct === 'false') {
+                            score -= 5;
+                            if (score < 0) {
+                                gameOver = true;
+                                alert(`Game Over! Pontuação final: ${score}`);
+                            }
+                        }
+
+                        // Aplica o efeito da sentença especial, se for o caso
+                        if (sentence.dataset.special === 'true') {
+                            sentenceSpeed += 2; // Aumenta a velocidade
+                        }
+
+                        // Atualiza a pontuação e verifica se atingiu 250 pontos
+                        scoreDisplay.textContent = `Pontuação: ${score}`;
+                        if (score >= 250) {
+                            redirectToNextLevel();
+                        }
+                        sentence.remove();
+                    }
+
+                    // Remove a sentença ao sair da tela
+                    if (sentence.offsetTop > gameContainer.offsetHeight) {
+                        sentence.remove();
+                    }
+                }
+            }, 20);
+        }
+
+        // Redireciona para o próximo nível
+        function redirectToNextLevel() {
+            gameOver = true;
+            window.location.href = "VitoriaFase3.html"; // Substitua pela URL desejada
+        }
+
+        // Função para iniciar o jogo
+        function startGame() {
+            startButton.style.display = 'none';
+            player.style.display = 'block';
+            gameOver = false;
+            score = 0;
+            sentenceSpeed = 10; // Reinicia a velocidade
+            scoreDisplay.textContent = `Pontuação: ${score}`;
+
+            createSentenceInterval = setInterval(() => {
+                if (!gameOver) {
+                    createSentence();
+                }
+            }, 1000);
+        }
+
+        // Inicia o jogo ao clicar no botão de início
+        startButton.addEventListener('click', startGame);
+    </script>
+</body>
+</html>

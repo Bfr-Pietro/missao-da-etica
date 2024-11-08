@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão da Ética</title>
+    <link rel="shortcut icon" href="assets/imgs/favicon.png" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url(assets/imgs/polotno.png);
+            background-size: cover;
+            background-position: center;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #botaoplay, #botaocomojogar {
+            width: 95vw;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        #play, #comojogar {
+            background-color: rgb(4, 185, 4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: 0.3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        #play {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+        }
+
+        #play img {
+            width: 100px;
+        }
+
+        #play h2 {
+            font-size: 40px;
+        }
+
+        #play:hover, #comojogar:hover {
+            transform: scale(1.08);
+            cursor: pointer;
+            filter: drop-shadow(0px 0px 5px green);
+        }
+
+        #comojogar {
+            width: 180px;
+            height: 30px;
+            gap: 10px;
+            display: flex;
+            flex-direction: inherit;
+        }
+
+        #comojogar img {
+            width: 23px;
+        }
+
+        /* Estilos responsivos para telas menores */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+                height: auto;
+                background-size: 300vw;
+            }
+
+            #logo img{
+                width: 90vw;
+            }
+
+            #play {
+                width: 150px;
+                height: 150px;
+            }
+
+            #play img {
+                width: 80px;
+            }
+
+            #play h2 {
+                font-size: 30px;
+            }
+
+            #comojogar {
+                width: 150px;
+                height: 40px;
+            }
+
+            #comojogar img {
+                width: 20px;
+            }
+        }
+
+        /* Estilos responsivos para telas muito pequenas, como celulares */
+        @media (max-width: 480px) {
+            body{
+                background-size: 540vw;
+                background-position: -700px;
+            }
+            #play {
+                width: 120px;
+                height: 120px;
+            }
+
+            #play img {
+                width: 70px;
+            }
+
+            #play h2 {
+                font-size: 24px;
+            }
+
+            #comojogar {
+                width: 120px;
+                height: 35px;
+            }
+
+            #comojogar img {
+                width: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="logo">
+        <img src="assets/imgs/logo.PNG" alt="logo do jogo Missão da Ética">
+    </div>
+    <div id="botaoplay">
+        <a href="Fase1.html">
+            <div id="play">
+                <img src="assets/imgs/icons8-play-50.png" alt="Ícone de play">
+                <h2>Play</h2>
+            </div>
+        </a>
+    </div>
+    <div id="botaocomojogar">
+        <a href="ComoJogar.html" target="_blank">
+            <div id="comojogar">
+                <img src="assets/imgs/icons8-game-100.png" alt="Ícone de como jogar">
+                <p>Como Jogar?</p>
+            </div>
+        </a>
+    </div>
+</body>
+</html>

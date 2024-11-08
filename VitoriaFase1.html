@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Win Fase 1</title>
+    <link rel="shortcut icon" href="assets/imgs/favicon win.png" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url(assets/imgs/polotno.png);
+            background-size: cover;
+            background-position: center;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #botaoplay, #botaocomojogar {
+            width: 95vw;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        #play, #comojogar {
+            background-color: rgb(4, 185, 4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: 0.3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        #play {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+        }
+
+        #play img {
+            width: 100px;
+        }
+
+        #play h2 {
+            font-size: 25px;
+        }
+
+        #play:hover, #comojogar:hover {
+            transform: scale(1.08);
+            cursor: pointer;
+            filter: drop-shadow(0px 0px 5px green);
+        }
+
+        .efeito-vidro {
+            background: rgba(255, 255, 255, 0.448);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            color: black;
+            margin-top: -20px;
+        }
+
+        /* Estilos responsivos para telas menores */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+                height: auto;
+                background-size: 300vw;
+            }
+
+            #logo img{
+                width: 90vw;
+            }
+
+            #play {
+                width: 150px;
+                height: 150px;
+            }
+
+            #play img {
+                width: 80px;
+            }
+
+            #play h2 {
+                font-size: 20px;
+            }
+
+        }
+
+        /* Estilos responsivos para telas muito pequenas, como celulares */
+        @media (max-width: 480px) {
+            body{
+                background-size: 540vw;
+                background-position: -700px;
+            }
+            #play {
+                width: 120px;
+                height: 120px;
+            }
+
+            #play img {
+                width: 70px;
+            }
+
+            #play h2 {
+                font-size: 18px;
+            }
+
+            .efeito-vidro{
+                transform: scale(0.9);
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div id="logo">
+        <img src="assets/imgs/logo.PNG" alt="logo do jogo Missão da Ética">
+    </div>
+
+    <div class="efeito-vidro">
+        <h1>Parabéns</h1>
+        <p>Você passou do 1° nível</p>
+    </div>
+
+    <div id="botaoplay">
+        <a href="Fase2.html">
+            <div id="play">
+                <img src="assets/imgs/icons8-play-50.png" alt="Ícone de play">
+                <h2>Próxima Fase</h2>
+            </div>
+        </a>
+    </div>
+</body>
+</html>

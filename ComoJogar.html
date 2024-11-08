@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" href="assets/imgs/icons8-question-90.png" type="image/x-icon">
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+        }
+        body{
+            background-image: url(assets/imgs/polotno.png);
+            background-size: 100vw;
+            background-position: center;
+            padding: 50px;
+            text-align: center;
+        }
+        body h1{
+            font-size: 50px;
+        }
+        p{
+            font-size: 20px;
+        }
+        .efeito-vidro {
+            background: rgba(255, 255, 255, 0.448);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            gap: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        a{
+            text-decoration: none;
+            color: #fff;
+        }
+        #voltar{
+            background-color: rgb(4, 185, 4);
+            width: 200px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        #botaovoltar{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #voltar:hover{
+            transform: scale(1.08);
+            cursor: pointer;
+            filter: drop-shadow(0px 0px 5px green);
+        }
+    </style>
+</head>
+<body>
+    <div class="efeito-vidro">
+        <h1>Como Jogar?</h1>
+        <p>O objetivo do jogo "Missão da Ética" é simples: Você coleta as sentenças verdadeira e desvia das sentenças falsas. <br>
+            São 3 níveis no total, porém em cada nível que você passa a dificuldade aumenta.
+        </p>
+        <h2>Nível 1:</h2>
+        <p>As sentenças falsas estarão em vermelho e as verdadeiras em verde <br>
+        A velocidade em que as sentenças caem é mais lenta <br>
+        Quando você coleta a sentença verdadeira você ganha 10 pontos <br>
+        Quando você coleta a falsa você perde 20 pontos</p>
+        <h2>Nível 2:</h2>
+        <p>Agora, as sentenças estarão todas em cinza, então você precisará ler elas para decidir qual pegar e qual não pegar <br>
+        A velocidade aumenta um pouco <br>
+        Quando você coleta a falsa você perde 10 pontos <br>
+    </p>
+        <h2>Nível 3 (Final):</h2>
+        <p>
+        A velocidade aumenta um pouco mais <br>
+        Quando você coleta a falsa você perde 5 pontos <br>
+        <b>*Sentenças Especias*</b> Agora vamos ter sentenças especiais escritas <b>Não colete</b>, onde se você coletar a velocidade de seu jogo aumentará ainda mais   
+        </p>
+    </div>
+    <div id="botaovoltar">
+        <a href="index.html">
+            <div id="voltar">Voltar</div>
+        </a>
+    </div>
+</body>
+</html>
