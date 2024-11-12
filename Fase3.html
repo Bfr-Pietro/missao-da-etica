@@ -177,16 +177,29 @@
         let playerPosition = 0; 
         let score = 0;
         let gameOver = false;
-        let sentenceSpeed = 10; 
+        let sentenceSpeed = 0; 
         let createSentenceInterval;
 
         const sentences = [
-            { text: "O céu é azul", correct: true },
-            { text: "2 + 2 = 5", correct: false },
-            { text: "A água é molhada", correct: true },
-            { text: "A terra é plana", correct: false },
-            { text: "O fogo é quente", correct: true },
-            { text: "Cachorros miam", correct: false }
+            { text: "O código de ética de uma empresa é obrigatório para todos os funcionários.", correct: true },
+            { text: "A confidencialidade permite compartilhar informações pessoais.", correct: false },
+            { text: "A integridade é um valor fundamental em qualquer código de ética.", correct: true },
+            { text: "É aceitável presenteear um cliente para influenciar uma decisão de negócios.", correct: false },
+            { text: "A transparência é essencial para manter a confiança da sociedade.", correct: true },
+            { text: "O código de ética só se aplica a funcionários de alto escalão.", correct: false },
+            { text: "A responsabilidade social é um aspecto importante do código de ética.", correct: true },
+            { text: "É permitido usar recursos da empresa para fins pessoais.", correct: false },
+            { text: "A honestidade é uma norma de conduta fundamental em qualquer organização.", correct: true },
+            { text: "A discriminação é tolerada em alguns casos.", correct: false },
+            { text: "A justiça e equidade são valores fundamentais em qualquer código de ética.", correct: true },
+            { text: "A ética é apenas para questões morais.", correct: false },
+            { text: "A responsabilidade ambiental é um aspecto importante do código de ética.", correct: true },
+            { text: "É aceitável mentir para proteger a reputação da empresa.", correct: false },
+            { text: "A corrupção é tolerada em alguns casos.", correct: false },
+            { text: "A privacidade dos clientes não é importante.", correct: false },
+            { text: "A confiança é um valor fundamental em qualquer relacionamento profissional.", correct: true },
+            { text: "O código de ética é apenas para empresas grandes. ", correct: false },
+            { text: "A ética não é importante em decisões de negócios.", correct: false }
         ];
 
         document.addEventListener('keydown', (event) => {
@@ -236,7 +249,7 @@
                     clearInterval(sentenceInterval);
                     sentence.remove();
                 } else {
-                    sentence.style.top = `${sentence.offsetTop + sentenceSpeed}px`;
+                    sentence.style.top = `${sentence.offsetTop + sentenceSpeed - 5}px`;
 
                     const playerRect = player.getBoundingClientRect();
                     const sentenceRect = sentence.getBoundingClientRect();
@@ -258,7 +271,7 @@
                         }
 
                         if (sentence.dataset.special === 'true') {
-                            sentenceSpeed += 2; 
+                            sentenceSpeed += 3; 
                         }
 
                         scoreDisplay.textContent = `Pontuação: ${score}`;
@@ -302,7 +315,7 @@
                 if (!gameOver) {
                     createSentence();
                 }
-            }, 1000);
+            }, 1200);
         }
 
         startButton.addEventListener('click', startGame);
