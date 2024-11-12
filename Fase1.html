@@ -237,7 +237,7 @@
                     clearInterval(sentenceInterval);
                     sentence.remove();
                 } else {
-                    sentence.style.top = `${sentence.offsetTop + 2.3}px`;
+                    sentence.style.top = `${sentence.offsetTop + 2.8}px`;
 
                     const playerRect = player.getBoundingClientRect();
                     const sentenceRect = sentence.getBoundingClientRect();
@@ -290,7 +290,7 @@
                 if (!gameOver) {
                     createSentence();
                 }
-            }, 2000);
+            }, 1800);
         }
 
         function redirectToSite() {
