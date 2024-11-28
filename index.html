@@ -57,11 +57,15 @@
             border-radius: 10px;
         }
 
+        #comojogar{
+            flex-direction: inherit;
+        }
+
         #play {
             width: 180px;
             height: 180px;
             border-radius: 20px;
-            transition: 0.3s ease-in-out;
+            cursor: pointer;
         }
 
         #play img {
@@ -74,7 +78,6 @@
 
         #play:hover, #comojogar:hover {
             transform: scale(1.05);
-            cursor: pointer;
             filter: drop-shadow(0px 0px 5px green);
         }
 
@@ -82,27 +85,59 @@
             width: 180px;
             height: 30px;
             gap: 10px;
-            display: flex;
-            flex-direction: inherit;
-            transition: 0.3s ease-in-out;
         }
 
         #comojogar img {
             width: 23px;
         }
 
-        /* Estilos responsivos para telas menores */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+        }
+
+        .option-button {
+            background-color: rgb(4, 185, 4);
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            text-decoration: none;
+            color: white;
+        }
+
+        .option-button img {
+            width: 100px;
+        }
+
+        .option-button h2 {
+            font-size: 24px;
+        }
+
+        .option-button:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0px 0px 5px green);
+        }
+
         @media (max-width: 768px) {
-            body {
-                padding: 20px;
-                height: auto;
-                background-size: 300vw;
-            }
-
-            #logo img{
-                width: 90vw;
-            }
-
             #play {
                 width: 150px;
                 height: 150px;
@@ -116,22 +151,26 @@
                 font-size: 30px;
             }
 
-            #comojogar {
+            .option-button {
                 width: 150px;
-                height: 40px;
+                height: 150px;
             }
 
-            #comojogar img {
-                width: 20px;
+            .option-button img {
+                width: 80px;
+            }
+
+            .option-button h2 {
+                font-size: 20px;
             }
         }
 
-        /* Estilos responsivos para telas muito pequenas, como celulares */
         @media (max-width: 480px) {
-            body{
+            body {
                 background-size: 540vw;
                 background-position: -700px;
             }
+
             #play {
                 width: 120px;
                 height: 120px;
@@ -145,13 +184,17 @@
                 font-size: 24px;
             }
 
-            #comojogar {
+            .option-button {
                 width: 120px;
-                height: 35px;
+                height: 120px;
             }
 
-            #comojogar img {
-                width: 18px;
+            .option-button img {
+                width: 70px;
+            }
+
+            .option-button h2 {
+                font-size: 18px;
             }
         }
     </style>
@@ -161,12 +204,10 @@
         <img src="assets/imgs/logo.png" alt="logo do jogo Missão da Ética">
     </div>
     <div id="botaoplay">
-        <a href="Fase1.html">
-            <div id="play">
-                <img src="assets/imgs/icons8-play-50.png" alt="Ícone de play">
-                <h2>Play</h2>
-            </div>
-        </a>
+        <div id="play" onclick="showOverlay()">
+            <img src="assets/imgs/icons8-play-50.png" alt="Ícone de play">
+            <h2>Play</h2>
+        </div>
     </div>
     <div id="botaocomojogar">
         <a href="ComoJogar.html">
@@ -176,5 +217,29 @@
             </div>
         </a>
     </div>
+    <div class="overlay" id="overlay" onclick="hideOverlay(event)">
+        <div class="options" onclick="event.stopPropagation()">
+            <a href="ranking.html" class="option-button">
+                <img src="assets/imgs/icons8-ranking-100.png" alt="Ícone Site 1">
+                <h2>Ranking</h2>
+            </a>
+            <a href="Fase1.html" class="option-button">
+                <img src="assets/imgs/icons8-game-100.png" alt="Ícone Site 2">
+                <h2>Level</h2>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function showOverlay() {
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        function hideOverlay(event) {
+            if (event.target === document.getElementById('overlay')) {
+                document.getElementById('overlay').style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
