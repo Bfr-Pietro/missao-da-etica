@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão da Ética</title>
+    <link rel="shortcut icon" href="assets/imgs/favicon.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url(assets/imgs/polotno.png);
+            background-size: 100vw;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .game-container {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            background-image: url(assets/imgs/Rua\ Jogo\ de\ Ética.png);
+            overflow: hidden;
+            border: 5px solid rgb(0, 0, 0);
+        }
+
+        .player {
+            position: absolute;
+            bottom: 20px;
+            width: 120px;
+            height: 120px;
+            transform: rotate(270deg);
+            background-size: cover;
+            background-position: center;
+            background-image: url(assets/imgs/animacao_megaman_-running.gif);
+            border-radius: 10px;
+            transition: left 0.2s ease-in-out;
+        }
+
+        .sentence {
+            position: absolute;
+            width: 30%;
+            height: 60px;
+            padding: 5px;
+            font-size: 14px;
+            text-align: center;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+        }
+
+        #startButton, #retryButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #retryButton {
+            display: none;
+            background-color: #dc3545;
+        }
+
+        #objetivo{
+            position: absolute;
+            top: 18px;
+        }
+
+        .efeito-vidro {
+            background: rgba(124, 122, 122, 0.653);
+            border-radius: 10px;
+            padding: 2px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Media query para dispositivos móveis */
+        @media (max-width: 768px) {
+            .game-container {
+                width: 100%;
+                height: 70vh;
+                background-size: 100vw;
+            }
+
+            .player {
+                width: 100px;
+                height: 100px;
+            }
+
+            .sentence {
+                font-size: 12px;
+                width: 32%;
+            }
+
+            #score {
+                font-size: 16px;
+            }
+
+            #mobileControls {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                position: absolute;
+                bottom: 10px;
+            }
+
+            .control-button {
+                width: 45%;
+                padding: 10px;
+                font-size: 18px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+
+        /* Estilo do ranking */
+        #ranking {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            width: 50%;
+            max-height: 80%;
+            overflow-y: scroll;
+            font-size: 20px;
+        }
+
+        #ranking h2 {
+            margin-bottom: 20px;
+            font-size: 30px;
+        }
+
+        #ranking ol {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+        #settingsButton {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Estilo para a div de configurações */
+    #settings {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        width: 300px;
+        display: none;
+    }
+
+    #settings h2 {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Estilo para os botões dentro das configurações */
+    #settings button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    /* Estilo do botão "Fechar" */
+    #settings button:hover {
+        background-color: #218838;
+    }
+
+    .brack{
+        color: black;
+    }
+
+    #redirectButton {
+    display: none;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin: auto;
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="objetivo" class="efeito-vidro">
+        <h1>Objetivo:</h1>
+        <p>Colete as sentenças verdadeiras e desvie das erradas. Alcance o máximo de pontos e seja o 1° no ranking!</p>
+    </div>
+    <div class="game-container">
+        <div id="player" class="player" style="display: none;"></div>
+        <div id="score">Pontuação: 0</div>
+        <button id="startButton">Iniciar Jogo</button>
+        <button id="retryButton" onclick="redirectToSite()">Voltar</button>
+
+        <!-- Controles para dispositivos móveis -->
+        <div id="mobileControls" style="display: none;">
+            <button class="control-button" onclick="movePlayerLeft()">←</button>
+            <button class="control-button" onclick="movePlayerRight()">→</button>
+        </div>
+    </div>
+    <div id="ranking" class="efeito-vidro" style="display: none;">
+        <h2>Ranking</h2>
+        <ol id="rankingList"></ol>
+        <button id="redirectButton" onclick="redirectToExternalSite()">Voltar</button>
+    </div>
+    <button id="settingsButton" class="efeito-vidro">Configurações</button>
+
+<!-- Div para Configurações -->
+<div id="settings" class="efeito-vidro" style="display: none;">
+    <h2 class="brack">Configurações</h2>
+    <div>
+        <label class="brack" for="speedSelect">Velocidade das sentenças:</label>
+        <select id="speedSelect">
+            <option value="1">Normal</option>
+            <option value="2">2x</option>
+            <option value="4">4x</option>
+            <option value="6">6x</option>
+            <option value="8">8x</option>
+            <option value="10">10x</option>
+        </select>
+    </div>
+    <div>
+        <label class="brack" for="colorSelect">Cor das Sentenças:</label>
+        <select id="colorSelect">
+            <option value="true-false">Verdadeiras verdes, falsas vermelhas</option>
+            <option value="gray">Todas cinzas (quadrupla ganho/perda)</option>
+        </select>
+    </div>
+    <button onclick="closeSettings()">Fechar</button>
+</div>
+
+    <script>
+        const player = document.getElementById('player');
+        const gameContainer = document.querySelector('.game-container');
+        const scoreDisplay = document.getElementById('score');
+        const startButton = document.getElementById('startButton');
+        const retryButton = document.getElementById('retryButton');
+        const mobileControls = document.getElementById('mobileControls');
+        const rankingContainer = document.getElementById('ranking');
+        const rankingList = document.getElementById('rankingList');
+        let playerPosition = 0;
+        let score = 0;
+        let gameOver = false;
+        let createSentenceInterval;
+        let gameTime = 30; // 30 segundos de tempo para o jogo
+        let timerInterval;
+        let playerName = '';
+
+        const sentences = [
+            { text: "O código de ética de uma empresa é obrigatório para todos os funcionários.", correct: true },
+            { text: "A confidencialidade permite compartilhar informações pessoais.", correct: false },
+            { text: "A integridade é um valor fundamental em qualquer código de ética.", correct: true },
+            { text: "É aceitável presenteear um cliente para influenciar uma decisão de negócios.", correct: false },
+            { text: "A transparência é essencial para manter a confiança da sociedade.", correct: true },
+            { text: "O código de ética só se aplica a funcionários de alto escalão.", correct: false },
+            { text: "A responsabilidade social é um aspecto importante do código de ética.", correct: true },
+            { text: "É permitido usar recursos da empresa para fins pessoais.", correct: false },
+            { text: "A honestidade é uma norma de conduta fundamental em qualquer organização.", correct: true },
+            { text: "A discriminação é tolerada em alguns casos.", correct: false },
+            { text: "A justiça e equidade são valores fundamentais em qualquer código de ética.", correct: true },
+            { text: "A ética é apenas para questões morais.", correct: false },
+            { text: "A responsabilidade ambiental é um aspecto importante do código de ética.", correct: true },
+            { text: "É aceitável mentir para proteger a reputação da empresa.", correct: false },
+            { text: "A corrupção é tolerada em alguns casos.", correct: false },
+            { text: "A privacidade dos clientes não é importante.", correct: false },
+            { text: "A confiança é um valor fundamental em qualquer relacionamento profissional.", correct: true },
+            { text: "O código de ética é apenas para empresas grandes. ", correct: false },
+            { text: "A ética não é importante em decisões de negócios.", correct: false }
+        ];
+
+        function movePlayerLeft() {
+            if (playerPosition > 0) {
+                playerPosition--;
+                updatePlayerPosition();
+            }
+        }
+
+        function movePlayerRight() {
+            if (playerPosition < 2) {
+                playerPosition++;
+                updatePlayerPosition();
+            }
+        }
+
+        function updatePlayerPosition() {
+            player.style.left = `${playerPosition * (gameContainer.clientWidth / 2.6)}px`;
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (!gameOver) {
+                if (event.key === 'ArrowLeft') {
+                    movePlayerLeft();
+                } else if (event.key === 'ArrowRight') {
+                    movePlayerRight();
+                }
+            }
+        });
+
+        function createSentence() {
+            const sentenceData = sentences[Math.floor(Math.random() * sentences.length)];
+            const sentence = document.createElement('div');
+            sentence.classList.add('sentence');
+            sentence.textContent = sentenceData.text;
+            sentence.dataset.correct = sentenceData.correct;
+            sentence.style.left = `${Math.floor(Math.random() * 3) * (gameContainer.clientWidth / 2.8)}px`;
+            sentence.style.top = '-30px';
+            sentence.style.backgroundColor = sentenceData.correct ? '#28a745' : '#dc3545';
+            gameContainer.appendChild(sentence);
+
+            const sentenceInterval = setInterval(() => {
+                if (gameOver) {
+                    clearInterval(sentenceInterval);
+                    sentence.remove();
+                } else {
+                    sentence.style.top = `${sentence.offsetTop + 2.8}px`;
+
+                    const playerRect = player.getBoundingClientRect();
+                    const sentenceRect = sentence.getBoundingClientRect();
+                    if (
+                        playerRect.left < sentenceRect.right &&
+                        playerRect.right > sentenceRect.left &&
+                        playerRect.top < sentenceRect.bottom &&
+                        playerRect.bottom > sentenceRect.top
+                    ) {
+                        clearInterval(sentenceInterval);
+                        if (sentence.dataset.correct === 'true') {
+                            score += 10;
+                            if (score >= 250) {
+                                redirectToNextLevel();
+                            }
+                        } else {
+                            score -= 20;
+                            if (score < 0) {
+                                gameOver = true;
+                                alert(`Você Perdeu!`);
+                                retryButton.style.display = 'block';
+                            }
+                        }
+                        scoreDisplay.textContent = `Pontuação: ${score}`;
+                        sentence.remove();
+                    }
+
+                    if (sentence.offsetTop > gameContainer.offsetHeight) {
+                        sentence.remove();
+                    }
+                }
+            }, 20);
+        }
+
+        function redirectToNextLevel() {
+            gameOver = true;
+            saveScore();
+            showRanking();
+        }
+
+        function startGame() {
+            playerName = prompt('Digite seu nome de usuário:');
+            if (!playerName) {
+                alert('Nome de usuário é necessário!');
+                return;
+            }
+
+            startButton.style.display = 'none';
+            player.style.display = 'block';
+            gameOver = false;
+            score = 0;
+            scoreDisplay.textContent = `Pontuação: ${score}`;
+            mobileControls.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+            retryButton.style.display = 'none';
+
+            // Inicia o cronômetro
+            timerInterval = setInterval(() => {
+                if (gameTime <= 0) {
+                    clearInterval(timerInterval);
+                    gameOver = true;
+                    alert('Tempo esgotado!');
+                    saveScore();
+                    showRanking();
+                } else {
+                    gameTime--;
+                    scoreDisplay.textContent = `Pontuação: ${score} - Tempo: ${gameTime}s`;
+                }
+            }, 1000);
+
+            createSentenceInterval = setInterval(() => {
+                if (!gameOver) {
+                    createSentence();
+                }
+            }, 1800);
+        }
+
+        function saveScore() {
+            const players = JSON.parse(localStorage.getItem('players')) || [];
+            players.push({ name: playerName, score: score });
+            players.sort((a, b) => b.score - a.score); // Ordena em ordem decrescente
+            localStorage.setItem('players', JSON.stringify(players));
+        }
+
+        function showRanking() {
+            const players = JSON.parse(localStorage.getItem('players')) || [];
+            rankingList.innerHTML = '';
+            players.slice(0, 5).forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = `${player.name}: ${player.score} pontos`;
+                rankingList.appendChild(li);
+            });
+            rankingContainer.style.display = 'block';
+            retryButton.style.display = 'block';
+        }
+
+        function redirectToSite() {
+            window.location.href = "index.html";
+        }
+
+        startButton.addEventListener('click', startGame);
+        const settingsButton = document.getElementById('settingsButton');
+    const settingsDiv = document.getElementById('settings');
+    const speedSelect = document.getElementById('speedSelect');
+    const colorSelect = document.getElementById('colorSelect');
+    const backButton = document.getElementById('backButton');
+    let sentenceSpeedMultiplier = 1;
+    let sentenceColorMode = 'true-false';  // 'true-false' ou 'gray'
+
+    // Exibe a janela de configurações
+    settingsButton.addEventListener('click', () => {
+        settingsDiv.style.display = 'block';
+    });
+
+    // Fecha a janela de configurações
+    function closeSettings() {
+        settingsDiv.style.display = 'none';
+    }
+
+    // Modificação nas cores das sentenças
+    function createSentence() {
+        const sentenceData = sentences[Math.floor(Math.random() * sentences.length)];
+        const sentence = document.createElement('div');
+        sentence.classList.add('sentence');
+        sentence.textContent = sentenceData.text;
+        sentence.dataset.correct = sentenceData.correct;
+        sentence.style.left = `${Math.floor(Math.random() * 3) * (gameContainer.clientWidth / 2.8)}px`;
+        sentence.style.top = '-30px';
+
+        // Alterando a cor das sentenças conforme a escolha do usuário
+        if (sentenceColorMode === 'true-false') {
+            sentence.style.backgroundColor = sentenceData.correct ? '#28a745' : '#dc3545';
+        } else {
+            sentence.style.backgroundColor = '#808080';  // Cinza para todas
+        }
+
+        gameContainer.appendChild(sentence);
+
+        const sentenceInterval = setInterval(() => {
+            if (gameOver) {
+                clearInterval(sentenceInterval);
+                sentence.remove();
+            } else {
+                sentence.style.top = `${sentence.offsetTop + 2.8 * sentenceSpeedMultiplier}px`;
+
+                const playerRect = player.getBoundingClientRect();
+                const sentenceRect = sentence.getBoundingClientRect();
+                if (
+                    playerRect.left < sentenceRect.right &&
+                    playerRect.right > sentenceRect.left &&
+                    playerRect.top < sentenceRect.bottom &&
+                    playerRect.bottom > sentenceRect.top
+                ) {
+                    clearInterval(sentenceInterval);
+                    if (sentence.dataset.correct === 'true') {
+                        score += (sentenceColorMode === 'gray' ? 40 : 10);  // Quadrupla pontuação para o modo cinza
+                        // if (score >= 250) {
+                        //     redirectToNextLevel();
+                        // }
+                    } else {
+                        score -= (sentenceColorMode === 'gray' ? 80 : 20);  // Quadrupla perda de pontos para o modo cinza
+                        if (score < 0) {
+                            gameOver = true;
+                            alert(`Você Perdeu!`);
+                            retryButton.style.display = 'block';
+                        }
+                    }
+                    scoreDisplay.textContent = `Pontuação: ${score}`;
+                    sentence.remove();
+                }
+
+                if (sentence.offsetTop > gameContainer.offsetHeight) {
+                    sentence.remove();
+                }
+            }
+        }, 20);
+    }
+
+    function redirectToNextLevel() {
+        gameOver = true;
+        saveScore();
+        showRanking();
+        showBackButton(); // Mostrar botão de voltar
+    }
+
+    // Exibindo o ranking e o botão de voltar
+    function showRanking() {
+        const players = JSON.parse(localStorage.getItem('players')) || [];
+        rankingList.innerHTML = '';
+        players.slice(0, 5).forEach(player => {
+            const li = document.createElement('li');
+            li.textContent = `${player.name}: ${player.score} pontos`;
+            rankingList.appendChild(li);
+        });
+        rankingContainer.style.display = 'block';
+        retryButton.style.display = 'block';
+        document.getElementById('redirectButton').style.display = 'block';
+    }
+
+    // Inicia o jogo
+    function startGame() {
+        playerName = prompt('Digite seu nome de usuário:');
+        if (!playerName) {
+            alert('Nome de usuário é necessário!');
+            return;
+        }
+
+        startButton.style.display = 'none';
+        player.style.display = 'block';
+        gameOver = false;
+        score = 0;
+        scoreDisplay.textContent = `Pontuação: ${score}`;
+        mobileControls.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+        retryButton.style.display = 'none';
+
+        // Configura as opções de velocidade e cor antes de começar
+        sentenceSpeedMultiplier = parseInt(speedSelect.value);
+        sentenceColorMode = colorSelect.value;
+
+        // Inicia o cronômetro
+        timerInterval = setInterval(() => {
+            if (gameTime <= 0) {
+                clearInterval(timerInterval);
+                gameOver = true;
+                alert('Tempo esgotado!');
+                saveScore();
+                showRanking();
+            } else {
+                gameTime--;
+                scoreDisplay.textContent = `Pontuação: ${score} - Tempo: ${gameTime}s`;
+            }
+        }, 1000);
+
+        createSentenceInterval = setInterval(() => {
+            if (!gameOver) {
+                createSentence();
+            }
+        }, 1800 / sentenceSpeedMultiplier);
+    }
+
+    startButton.addEventListener('click', startGame);
+
+    function redirectToExternalSite() {
+    window.location.href = "https://bfr-pietro.github.io/missao-da-etica/"; // Substitua pelo URL desejado.
+}
+
+    </script>
+</body>
+</html>
